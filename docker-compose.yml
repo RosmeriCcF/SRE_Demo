@@ -16,14 +16,14 @@ services:
       - "9090:9090"
     networks:
       - monitoring
-
+  # Servicio de Grafana para visualizar dashboards
   grafana:
     image: grafana/grafana
     ports:
       - "3000:3000"
     networks:
       - monitoring
-
+  # Servicio de Alertmanager para gestionar alertas
   alertmanager:
     image: prom/alertmanager
     volumes:

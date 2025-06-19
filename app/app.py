@@ -5,14 +5,16 @@ import random
 
 app = Flask(__name__)
 
-# Métricas SRE
+# Métrica: Cuenta la cantidad total de requests
 REQUEST_COUNT = Counter('request_count', 'Número de peticiones', ['method', 'endpoint'])
+# Métrica: Cuenta la cantidad total de errores
 ERROR_COUNT = Counter('error_count', 'Número de errores', ['endpoint'])
+# Métrica: Histograma de latencia de requests
 REQUEST_LATENCY = Histogram('request_latency_seconds', 'Tiempo de respuesta', ['endpoint'])
 
 @app.route("/")
 def home():
-    REQUEST_COUNT.labels(method="GET", endpoint="/").inc()
+    REQUEST_COUNT.labels(method="GET", endpoint="/").inc()  # Incrementa el contador de requests
     return "¡Hola! Esta es una demo SRE con Flask + Prometheus."
 
 @app.route("/login")
@@ -30,11 +32,12 @@ def login():
 @app.route("/error")
 def error():
     REQUEST_COUNT.labels(method="GET", endpoint="/error").inc()
-    ERROR_COUNT.labels(endpoint="/error").inc()
+    ERROR_COUNT.labels(endpoint="/error").inc() # Incrementa el contador de errores
     return "Error simulado", 500
 
 @app.route("/metrics")
 def metrics():
+     # Este endpoint expone las métricas para que Prometheus las recoja
     return generate_latest(), 200, {'Content-Type': 'text/plain; version=0.0.4'}
 
 if __name__ == "__main__":
