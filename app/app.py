@@ -6,18 +6,19 @@ import random
 app = Flask(__name__)
 
 # Métricas SRE
-REQUEST_COUNT = Counter('request_count', 'Número de peticiones', ['method', 'endpoint'])
-ERROR_COUNT = Counter('error_count', 'Número de errores', ['endpoint'])
-REQUEST_LATENCY = Histogram('request_latency_seconds', 'Tiempo de respuesta', ['endpoint'])
+REQUEST_COUNT = Counter('request_count', 'Número de peticiones', ['method', 'endpoint']) #Total de peticiones hechas a cualquier endpoint
+ERROR_COUNT = Counter('error_count', 'Número de errores', ['endpoint']) #Total de errores simulados (HTTP 500)
+REQUEST_LATENCY = Histogram('request_latency_seconds', 'Tiempo de respuesta', ['endpoint']) #Latencia (tiempo de respuesta) de /login
 
 @app.route("/")
 def home():
     REQUEST_COUNT.labels(method="GET", endpoint="/").inc()
-    return "¡Hola! Esta es una demo SRE con Flask + Prometheus."
+    return "DEMO SRE con Flask + Prometheus."
 
+#Latencia de los endpoints
 @app.route("/login")
 def login():
-    REQUEST_COUNT.labels(method="GET", endpoint="/login").inc()
+    REQUEST_COUNT.labels(method="GET", endpoint="/login").inc() #Incremento de 1
     start_time = time.time()
 
     # Simulamos latencia entre 0.1 y 1.2 segundos
@@ -27,6 +28,7 @@ def login():
     REQUEST_LATENCY.labels(endpoint="/login").observe(time.time() - start_time)
     return "Login exitoso (simulado)"
 
+# Errores simulados
 @app.route("/error")
 def error():
     REQUEST_COUNT.labels(method="GET", endpoint="/error").inc()

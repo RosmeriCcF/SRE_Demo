@@ -1,5 +1,13 @@
 global:
-  scrape_interval: 10s  # Cada cuánto tiempo se recolectan métricas
+  scrape_interval: 10s
+
+rule_files:
+  - "alert.rules.yml"  # Prometheus usa este archivo para generar alertas
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]  # conexión con Alertmanager
 
 scrape_configs:
   - job_name: 'flask_app'

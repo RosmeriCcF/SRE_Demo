@@ -1,11 +1,16 @@
 global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'ccantorosmeri19@gmail.com'
+  smtp_auth_username: 'ccantorosmeri19@gmail.com'
+  smtp_auth_password: 'zxsk jacp zpbd rxrt'
+  smtp_require_tls: true
   resolve_timeout: 5m
 
 route:
-  receiver: 'default'
+  receiver: 'correo'
 
 receivers:
-  - name: 'default'
+  - name: 'correo'
     email_configs:
-      - to: 'alert@example.com'
+      - to: 'ccantorosmeri19@gmail.com'
         send_resolved: true

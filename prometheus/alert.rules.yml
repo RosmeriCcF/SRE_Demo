@@ -1,0 +1,11 @@
+groups:
+  - name: errores_app
+    rules:
+      - alert: ErroresHTTP500Alto
+        expr: increase(error_count_total[1m]) > 2
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Se detectaron más de 2 errores 500 en el último minuto"
+          description: "Revisar el endpoint /error en Flask"

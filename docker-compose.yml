@@ -1,5 +1,6 @@
 version: '3.8'
-
+#Orquestador de todos los servicios
+# 4 servicios (contenedores): imágenes, nombres, puertos, redes y dependencias.
 services:
   app:
     build: ./app
